@@ -43,11 +43,11 @@ namespace :letsencrypt do
       challenge = authorization.http01
 
       print "Setting config vars on Heroku..."
+      print "challenge.filename: #{challenge.filename}"
+      print "challenge.file_content: #{challenge.file_content}"
       heroku.config_var.update(heroku_app, {
         'ACME_CHALLENGE_FILENAME' => challenge.filename,
-        print "challenge.filename: #{challenge.filename}"
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
-        print "challenge.file_content: #{challenge.file_content}"
       })
       puts "Done!"
 
