@@ -64,6 +64,7 @@ namespace :letsencrypt do
       start_time = Time.now
 
       print "reading from: http://#{hostname}/#{challenge.filename}"
+
       begin
         open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
