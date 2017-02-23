@@ -64,7 +64,6 @@ namespace :letsencrypt do
       start_time = Time.now
 
       print "reading from: http://#{hostname}/#{challenge.filename}\n"
-      print "Current route is env['PATH_INFO']: #{env["PATH_INFO"]}\n"
       begin
         open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
