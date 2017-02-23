@@ -6,14 +6,8 @@ module Letsencrypt
     end
 
     def call(env)
-      Rails.logger.debug "env['PATH_INFO'] #{env["PATH_INFO"]}"
-      Rails.logger.debug "Seeking challenge at /#{Letsencrypt.configuration.acme_challenge_filename}"
-      Rails.logger.debug "Letsencrypt.challenge_configured? #{Letsencrypt.challenge_configured?}"
       if Letsencrypt.challenge_configured? && env["PATH_INFO"] == "/#{Letsencrypt.configuration.acme_challenge_filename}"
-        Rails.logger.debug "Challenge accepted. Should return 200."
         return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.configuration.acme_challenge_file_content]]
-      else
-        Rails.logger.debug "Challenge rejected. #{@app}"
       end
 
       @app.call(env)

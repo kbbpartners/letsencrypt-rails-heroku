@@ -42,9 +42,9 @@ namespace :letsencrypt do
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      print "Setting config vars on Heroku..."
-      print "challenge.filename: #{challenge.filename}"
-      print "challenge.file_content: #{challenge.file_content}"
+      print "Setting config vars on Heroku... \n"
+      print "challenge.filename: #{challenge.filename} \n"
+      print "challenge.file_content: #{challenge.file_content} \n"
       heroku.config_var.update(heroku_app, {
         'ACME_CHALLENGE_FILENAME' => challenge.filename,
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
@@ -56,15 +56,15 @@ namespace :letsencrypt do
 
       # Get the domain name from Heroku
       hostname = heroku.domain.list(heroku_app).first['hostname']
-      print "hostname from heroku: #{hostname}"
+      print "hostname from heroku: #{hostname}\n"
 
       # Wait at least a little bit, otherwise the first request will almost always fail.
       sleep(2)
 
       start_time = Time.now
 
-      print "reading from: http://#{hostname}/#{challenge.filename}"
-
+      print "reading from: http://#{hostname}/#{challenge.filename}\n"
+      print "Current route is env['PATH_INFO']: #{env["PATH_INFO"]}\n"
       begin
         open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
