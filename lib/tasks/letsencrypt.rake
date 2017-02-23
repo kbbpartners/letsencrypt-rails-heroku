@@ -45,7 +45,9 @@ namespace :letsencrypt do
       print "Setting config vars on Heroku..."
       heroku.config_var.update(heroku_app, {
         'ACME_CHALLENGE_FILENAME' => challenge.filename,
+        print "challenge.filename: #{challenge.filename}"
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
+        print "challenge.file_content: #{challenge.file_content}"
       })
       puts "Done!"
 
@@ -54,12 +56,14 @@ namespace :letsencrypt do
 
       # Get the domain name from Heroku
       hostname = heroku.domain.list(heroku_app).first['hostname']
-      
+      print "hostname from heroku: #{hostname}"
+
       # Wait at least a little bit, otherwise the first request will almost always fail.
       sleep(2)
 
       start_time = Time.now
 
+      print "reading from: http://#{hostname}/#{challenge.filename}"
       begin
         open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
