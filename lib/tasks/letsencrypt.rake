@@ -5,8 +5,15 @@ require 'platform-api'
 
 namespace :letsencrypt do
 
+  # Sets up logging - should only be called from other rake tasks
+  task setup_logger: :environment do
+    logger           = Logger.new(STDOUT)
+    logger.level     = Logger::INFO
+    Rails.logger     = logger
+  end
+
   desc 'Renew your LetsEncrypt certificate'
-  task :renew => :setup_logger do
+  task renew: :setup_logger do
 
     # Check configuration looks OK
     abort "letsencrypt-rails-heroku is configured incorrectly. Are you missing an environment variable or other configuration? You should have a heroku_token, heroku_app and acme_email configured either via a `Letsencrypt.configure` block in an initializer or as environment variables." unless Letsencrypt.configuration.valid?
