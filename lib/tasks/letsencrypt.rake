@@ -57,8 +57,6 @@ namespace :letsencrypt do
       print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
       print "!! Letsencrypt.configuration.acme_challenge_file_content: #{Letsencrypt.configuration.acme_challenge_file_content} \n"
 
-      Letsencrypt.configuration.initialize
-
       puts "Done!"
 
       # Wait for app to come up
