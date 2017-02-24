@@ -51,9 +51,11 @@ namespace :letsencrypt do
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
 
+      Letsencrypt.configuration.update_challenge_filename(challenge.filename)
+      Letsencrypt.configuration.update_challenge_file_content(challenge.file_content)
+
       print "!! After update of config vars on Heroku... \n"
       print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
-      # print "!! update_result['ACME_CHALLENGE_FILE_CONTENT']: #{update_result['ACME_CHALLENGE_FILE_CONTENT']} \n"
 
       puts "Done!"
 
@@ -71,7 +73,8 @@ namespace :letsencrypt do
       print "!! reading from: http://#{hostname}/#{challenge.filename}\n"
 
       begin
-        open("http://#{hostname}/#{challenge.filename}").read
+        result = open("http://#{hostname}/#{challenge.filename}").read
+        print "!! result returned: #{result} \n"
       rescue OpenURI::HTTPError => e
         if Time.now - start_time <= 30
           puts "Error fetching challenge, retrying... #{e.message}"
