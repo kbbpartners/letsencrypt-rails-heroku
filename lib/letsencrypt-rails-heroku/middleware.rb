@@ -5,16 +5,22 @@ module Letsencrypt
       @app = app
     end
 
-    def call(env)
+    def call env
+      dup._call env
+    end
+
+    def _call(env)
       current_path = env["PATH_INFO"]
-      challenge_path = "/#{Letsencrypt.configuration.acme_challenge_filename}"
-      matching_paths = current_path == challenge_path
-      Rails.logger.info "LE 01A - Path opened: #{current_path}"
-      Rails.logger.info "LE 01B - Path in config: #{challenge_path}"
+      challenge_filename = "/#{Letsencrypt.configuration.acme_challenge_filename}"
+      challenge_file_content = "#{Letsencrypt.configuration.acme_challenge_file_content}"
+      matching_paths = current_path == challenge_filename
+      Rails.logger.info "LE 01A - Open path: #{current_path}"
+      Rails.logger.info "LE 01B - Challenge path: #{challenge_filename}"
+      Rails.logger.info "LE 01C - Challenge response expected: #{challenge_file_content}"
       if Letsencrypt.challenge_configured? && matching_paths
         return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.configuration.acme_challenge_file_content]]
       else
-        Rails.logger.info "LE 01C - Current path and expected path match? #{matching_paths}"
+        Rails.logger.info "LE 01D - Current path and expected path match? #{matching_paths}"
       end
 
       @app.call(env)
