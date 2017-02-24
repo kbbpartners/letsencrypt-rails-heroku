@@ -9,10 +9,9 @@ module Letsencrypt
       Rails.logger.info "Letsencrypt::Middleware called..."
       Rails.logger.info "LE 01A - Current path is #{env["PATH_INFO"]}"
       Rails.logger.info "LE 01B - Configuration path is #{Letsencrypt.configuration.acme_challenge_filename}"
-      Rails.logger.info "LE 01C - ENV['ACME_CHALLENGE_FILENAME'] - #{ENV["ACME_CHALLENGE_FILENAME"]}"
       matching_paths = "/#{Letsencrypt.configuration.acme_challenge_filename}" == env["PATH_INFO"]
       if Letsencrypt.challenge_configured? && matching_paths
-        return [200, {"Content-Type" => "text/plain"}, [ENV["ACME_CHALLENGE_FILE_CONTENT"]]]
+        return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.configuration.acme_challenge_filename]]
       else
         Rails.logger.info "LE 01D - Current path and expected path match?"
         Rails.logger.info("LE 01E - Matching_paths: #{matching_paths}")

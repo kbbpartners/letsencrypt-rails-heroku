@@ -44,7 +44,6 @@ namespace :letsencrypt do
 
       print "!! Starting config vars on Heroku... \n"
       print "!! heroku.config_var: #{heroku.config_var} \n"
-      print "!! heroku.config_var.info: #{heroku.config_var.info} \n"
 
       print "Setting config vars on Heroku... \n"
       print "!! challenge.filename: #{challenge.filename} \n"
