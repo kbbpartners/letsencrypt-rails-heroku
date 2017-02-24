@@ -14,6 +14,11 @@ module Letsencrypt
       configuration.acme_challenge_file_content
   end
 
+  def self.update_challenge(challenge_filename, challenge_file_content)
+    configuration.acme_challenge_filename = challenge_filename
+    configuration.acme_challenge_file_content = challenge_file_content
+  end
+
   class Configuration
     attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint, :acme_challenge_filename, :acme_challenge_file_content
 
@@ -25,11 +30,6 @@ module Letsencrypt
       @acme_endpoint = ENV["ACME_ENDPOINT"] || 'https://acme-v01.api.letsencrypt.org/'
       @acme_challenge_filename = ENV["ACME_CHALLENGE_FILENAME"]
       @acme_challenge_file_content = ENV["ACME_CHALLENGE_FILE_CONTENT"]
-    end
-
-    def update_challenge(challenge_filename, challenge_file_content)
-      acme_challenge_filename = challenge_filename
-      acme_challenge_file_content = challenge_file_content
     end
 
     def valid?
