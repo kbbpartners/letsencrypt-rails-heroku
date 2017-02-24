@@ -42,9 +42,6 @@ namespace :letsencrypt do
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      print "!! Starting config vars on Heroku... \n"
-      print "!! heroku.config_var: #{heroku.config_var} \n"
-
       print "Setting config vars on Heroku... \n"
       print "!! challenge.filename: #{challenge.filename} \n"
       print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
@@ -58,7 +55,6 @@ namespace :letsencrypt do
       Letsencrypt.configuration.acme_challenge_file_content = challenge.file_content
 
       print "!! update_result on Heroku... \n"
-      print "!! update_result: #{update_result} \n"
       print "!! update_result['ACME_CHALLENGE_FILE_CONTENT']: #{update_result['ACME_CHALLENGE_FILE_CONTENT']} \n"
 
       puts "Done!"
@@ -68,8 +64,6 @@ namespace :letsencrypt do
 
       # Get the domain name from Heroku
       hostname = heroku.domain.list(heroku_app).first['hostname']
-
-      print "!! hostname from heroku: #{hostname}\n"
 
       # Wait at least a little bit, otherwise the first request will almost always fail.
       sleep(2)
