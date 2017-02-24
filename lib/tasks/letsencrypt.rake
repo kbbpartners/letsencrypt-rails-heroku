@@ -45,10 +45,19 @@ namespace :letsencrypt do
       print "Setting config vars on Heroku... \n"
       print "!! challenge.filename: #{challenge.filename} \n"
       print "!! challenge.file_content: #{challenge.file_content} \n"
-      heroku.config_var.update(heroku_app, {
+      update_result = heroku.config_var.update(heroku_app, {
         'ACME_CHALLENGE_FILENAME' => challenge.filename,
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
+
+      print "!! Update result from Heroku: #{update_result}"
+      print "!! Current config vars on Heroku... \n"
+      print "!! challenge.filename: #{challenge.filename} \n"
+      print "!! challenge.file_content: #{challenge.file_content} \n"
+
+      Letsencrypt.configuration.acme_challenge_filename = challenge.filename
+      Letsencrypt.configuration.acme_challenge_file_content = challenge.file_content
+
       puts "Done!"
 
       # Wait for app to come up
