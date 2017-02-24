@@ -21,6 +21,10 @@ module Letsencrypt
     attr_reader :acme_challenge_filename, :acme_challenge_file_content
 
     def initialize
+      refresh_environment_variables
+    end
+
+    def refresh_environment_variables
       @heroku_token = ENV["HEROKU_TOKEN"]
       @heroku_app = ENV["HEROKU_APP"]
       @acme_email = ENV["ACME_EMAIL"]
