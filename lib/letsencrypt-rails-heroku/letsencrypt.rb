@@ -28,8 +28,8 @@ module Letsencrypt
       @acme_email = ENV["ACME_EMAIL"]
       @acme_domain = ENV["ACME_DOMAIN"]
       @acme_endpoint = ENV["ACME_ENDPOINT"] || 'https://acme-v01.api.letsencrypt.org/'
-      @acme_challenge_filename = ENV["ACME_CHALLENGE_FILENAME"]
-      @acme_challenge_file_content = ENV["ACME_CHALLENGE_FILE_CONTENT"]
+      # @acme_challenge_filename = ENV["ACME_CHALLENGE_FILENAME"]
+      # @acme_challenge_file_content = ENV["ACME_CHALLENGE_FILE_CONTENT"]
     end
 
     def valid?
