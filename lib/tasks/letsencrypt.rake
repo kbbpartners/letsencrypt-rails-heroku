@@ -52,8 +52,7 @@ namespace :letsencrypt do
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
 
-      Letsencrypt.configuration.acme_challenge_filename = challenge.filename
-      Letsencrypt.configuration.acme_challenge_file_content = challenge.file_content
+      Letsencrypt.configuration.update_challenge(challenge.filename, challenge.file_content)
 
       print "!! After update of config vars on Heroku... \n"
       print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
