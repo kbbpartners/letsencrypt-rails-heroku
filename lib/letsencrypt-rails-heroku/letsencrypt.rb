@@ -29,13 +29,12 @@ module Letsencrypt
     end
 
     def acme_challenge_filename
-      puts "acme_challenge_filename ENV: #{ENV}"
-      puts "Letsencrypt::Configuration.acme_challenge_filename: #{ENV["ACME_CHALLENGE_FILENAME"]}"
+      Rails.logger.info "*!*!*! ENV['ACME_CHALLENGE_FILENAME']: #{ENV["ACME_CHALLENGE_FILENAME"]}"
       ENV["ACME_CHALLENGE_FILENAME"]
     end
 
     def acme_challenge_file_content
-      puts "Letsencrypt::Configuration.acme_challenge_file_content: #{ENV["ACME_CHALLENGE_FILE_CONTENT"]}"
+      Rails.logger.info "*!*!*! ENV['ACME_CHALLENGE_FILE_CONTENT']: #{ENV["ACME_CHALLENGE_FILE_CONTENT"]}"
       ENV["ACME_CHALLENGE_FILE_CONTENT"]
     end
 
