@@ -29,6 +29,7 @@ module Letsencrypt
     end
 
     def acme_challenge_filename
+      puts "acme_challenge_filename ENV: #{ENV}"
       puts "Letsencrypt::Configuration.acme_challenge_filename: #{ENV["ACME_CHALLENGE_FILENAME"]}"
       ENV["ACME_CHALLENGE_FILENAME"]
     end
