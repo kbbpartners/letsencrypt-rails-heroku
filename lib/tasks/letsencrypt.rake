@@ -54,8 +54,8 @@ namespace :letsencrypt do
       print "!! Current config vars on Heroku... \n"
       print "!! challenge.filename: #{challenge.filename} \n"
       print "!! challenge.file_content: #{challenge.file_content} \n"
-      print "!! Letsencrypt.configuration.filename: #{Letsencrypt.configuration.filename} \n"
-      print "!! Letsencrypt.configuration.file_content: #{Letsencrypt.configuration.file_content} \n"
+      print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
+      print "!! Letsencrypt.configuration.acme_challenge_file_content: #{Letsencrypt.configuration.acme_challenge_file_content} \n"
 
       Letsencrypt.configuration.initialize
 
