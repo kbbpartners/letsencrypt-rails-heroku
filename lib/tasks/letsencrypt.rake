@@ -72,6 +72,8 @@ namespace :letsencrypt do
       start_time = Time.now
 
       print "!! reading from: http://#{hostname}/#{challenge.filename}\n"
+      Rails.logger.info "!! reading from: http://#{hostname}/#{challenge.filename}\n"
+      Rails.logger.info "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
 
       begin
         open("http://#{hostname}/#{challenge.filename}").read
