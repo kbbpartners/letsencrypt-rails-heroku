@@ -52,7 +52,8 @@ namespace :letsencrypt do
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
 
-      print "!! After update of config vars on Heroku... \n"
+      print "!! After update of config vars on Heroku... #{update_result} \n\n"
+      puts "!! ENV['ACME_CHALLENGE_FILE_CONTENT']: #{ENV["ACME_CHALLENGE_FILE_CONTENT"]}"
       print "!! challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
 
       puts "Done!"
