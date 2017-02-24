@@ -33,19 +33,9 @@ module Letsencrypt
       ENV["ACME_CHALLENGE_FILENAME"]
     end
 
-    def update_challenge_filename(value)
-      puts "2 *!*!*! acme_challenge_filename value: #{value}"
-      write_attribute(:acme_challenge_filename, value)
-    end
-
     def acme_challenge_file_content
-      puts "3 *!*!*! ENV['ACME_CHALLENGE_FILE_CONTENT']: #{ENV["ACME_CHALLENGE_FILE_CONTENT"]}"
+      puts "2 *!*!*! ENV['ACME_CHALLENGE_FILE_CONTENT']: #{ENV["ACME_CHALLENGE_FILE_CONTENT"]}"
       ENV["ACME_CHALLENGE_FILE_CONTENT"]
-    end
-
-    def update_challenge_file_content(value)
-      puts "4 *!*!*! acme_challenge_file_content value: #{value}"
-      write_attribute(:acme_challenge_file_content, value)
     end
 
     def valid?

@@ -16,21 +16,22 @@ namespace :letsencrypt do
     heroku_app = Letsencrypt.configuration.heroku_app
 
     # Create a private key
-    print "Creating account key..."
+
+    # print "Creating account key..."
     private_key = OpenSSL::PKey::RSA.new(4096)
-    puts "Done!"
+    # puts "Done!"
 
     client = Acme::Client.new(private_key: private_key, endpoint: Letsencrypt.configuration.acme_endpoint, connection_options: { request: { open_timeout: 5, timeout: 5 } })
 
-    print "Registering with LetsEncrypt..."
+    # print "Registering with LetsEncrypt..."
     registration = client.register(contact: "mailto:#{Letsencrypt.configuration.acme_email}")
 
     registration.agree_terms
-    puts "Done!"
+    # puts "Done!"
 
     domains = []
     if Letsencrypt.configuration.acme_domain
-      puts "Using ACME_DOMAIN configuration variable..."
+      # puts "Using ACME_DOMAIN configuration variable..."
       domains = Letsencrypt.configuration.acme_domain.split(',').map(&:strip)
     else
       domains = heroku.domain.list(heroku_app).map{|domain| domain['hostname']}
@@ -38,12 +39,12 @@ namespace :letsencrypt do
     end
 
     domains.each do |domain|
-      puts "Performing verification for #{domain}:"
+      puts "1. Performing verification for #{domain}:"
 
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      print "Setting config vars on Heroku... \n"
+      print "2. Setting config vars on Heroku... \n"
       print "!! challenge.filename: #{challenge.filename} \n"
 
       update_result = heroku.config_var.update(heroku_app, {
@@ -51,11 +52,8 @@ namespace :letsencrypt do
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
 
-      Letsencrypt.configuration.update_challenge_filename(challenge.filename)
-      Letsencrypt.configuration.update_challenge_file_content(challenge.file_content)
-
       print "!! After update of config vars on Heroku... \n"
-      print "!! Letsencrypt.configuration.acme_challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
+      print "!! challenge_filename: #{Letsencrypt.configuration.acme_challenge_filename} \n"
 
       puts "Done!"
 
@@ -70,18 +68,18 @@ namespace :letsencrypt do
 
       start_time = Time.now
 
-      print "!! reading from: http://#{hostname}/#{challenge.filename}\n"
+      print "3. Calling: http://#{hostname}/#{challenge.filename}\n"
 
       begin
         result = open("http://#{hostname}/#{challenge.filename}").read
-        print "!! result returned: #{result} \n"
+        print "!! Result returned: #{result} \n"
       rescue OpenURI::HTTPError => e
         if Time.now - start_time <= 30
           puts "Error fetching challenge, retrying... #{e.message}"
           sleep(5)
           retry
         else
-          failure_message = "Error waiting for response from http://#{hostname}/#{challenge.filename}, Error: #{e.message}"
+          failure_message = "4. Error waiting for response from http://#{hostname}/#{challenge.filename}, Error: #{e.message}"
           raise Letsencrypt::Error::ChallengeUrlError, failure_message
         end
       end
@@ -97,7 +95,7 @@ namespace :letsencrypt do
 
       while challenge.verify_status == 'pending'
         if Time.now - start_time >= 30
-          failure_message = "Failed - timed out waiting for challenge verification."
+          failure_message = "5. Failed - timed out waiting for challenge verification."
           raise Letsencrypt::Error::VerificationTimeoutError, failure_message
         end
         sleep(3)
@@ -106,7 +104,7 @@ namespace :letsencrypt do
       puts "Done!"
 
       unless challenge.verify_status == 'valid'
-        puts "Problem verifying challenge."
+        puts "6. Problem verifying challenge."
         failure_message = "Status: #{challenge.verify_status}, Error: #{challenge.error}"
         raise Letsencrypt::Error::VerificationError, failure_message
       end
