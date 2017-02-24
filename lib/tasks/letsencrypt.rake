@@ -52,10 +52,11 @@ namespace :letsencrypt do
       puts "Done!"
 
       # Wait for app to come up
-      print "Testing filename works (to bring up app)..."
+      print "Testing filename works (to bring up app)...\n"
 
       # Get the domain name from Heroku
       hostname = heroku.domain.list(heroku_app).first['hostname']
+
       print "!! hostname from heroku: #{hostname}\n"
 
       # Wait at least a little bit, otherwise the first request will almost always fail.
@@ -64,6 +65,7 @@ namespace :letsencrypt do
       start_time = Time.now
 
       print "!! reading from: http://#{hostname}/#{challenge.filename}\n"
+
       begin
         open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
