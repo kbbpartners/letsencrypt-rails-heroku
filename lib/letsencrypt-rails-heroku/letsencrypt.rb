@@ -21,11 +21,6 @@ module Letsencrypt
     attr_reader :acme_challenge_filename, :acme_challenge_file_content
 
     def initialize
-      refresh_environment_variables
-    end
-
-    def refresh_environment_variables
-      Rails.logger.info "!!! refresh_environment_variables"
       @heroku_token = ENV["HEROKU_TOKEN"]
       @heroku_app = ENV["HEROKU_APP"]
       @acme_email = ENV["ACME_EMAIL"]
@@ -33,7 +28,6 @@ module Letsencrypt
       @acme_endpoint = ENV["ACME_ENDPOINT"] || 'https://acme-v01.api.letsencrypt.org/'
       @acme_challenge_filename = ENV["ACME_CHALLENGE_FILENAME"]
       @acme_challenge_file_content = ENV["ACME_CHALLENGE_FILE_CONTENT"]
-      Rails.logger.info "!!! @acme_challenge_filename: #{@acme_challenge_filename}"
     end
 
     def valid?
