@@ -18,6 +18,7 @@ module Letsencrypt
     attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint, :acme_challenge_filename, :acme_challenge_file_content
 
     def initialize
+      puts 'Initializing Letsencrypt::Configuration'
       @heroku_token = ENV["HEROKU_TOKEN"]
       @heroku_app = ENV["HEROKU_APP"]
       @acme_email = ENV["ACME_EMAIL"]

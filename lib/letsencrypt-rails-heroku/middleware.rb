@@ -18,6 +18,7 @@ module Letsencrypt
       Rails.logger.info "LE 01A - Open path: #{current_path}"
       Rails.logger.info "LE 01B - Challenge path: #{challenge_filename}"
       Rails.logger.info "LE 01C - Challenge response expected: #{challenge_file_content}"
+      Rails.logger.info "LE 01D - ENV value is #{ENV["ACME_CHALLENGE_FILENAME"]}"
 
       if Letsencrypt.challenge_configured? && matching_paths
         return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.configuration.acme_challenge_file_content]]
