@@ -8,12 +8,14 @@ namespace :letsencrypt do
   desc 'Renew your LetsEncrypt certificate'
   task :renew do
 
+    configuration = Letsencrypt.configuration
+
     # Check configuration looks OK
-    abort "letsencrypt-rails-heroku is configured incorrectly. Are you missing an environment variable or other configuration? You should have a heroku_token, heroku_app and acme_email configured either via a `Letsencrypt.configure` block in an initializer or as environment variables." unless Letsencrypt.configuration.valid?
+    abort "letsencrypt-rails-heroku is configured incorrectly. Are you missing an environment variable or other configuration? You should have a heroku_token, heroku_app and acme_email configured either via a `Letsencrypt.configure` block in an initializer or as environment variables." unless configuration.valid?
 
     # Set up Heroku client
-    heroku = PlatformAPI.connect_oauth Letsencrypt.configuration.heroku_token
-    heroku_app = Letsencrypt.configuration.heroku_app
+    heroku = PlatformAPI.connect_oauth configuration.heroku_token
+    heroku_app = configuration.heroku_app
 
     # Create a private key
 
@@ -21,18 +23,18 @@ namespace :letsencrypt do
     private_key = OpenSSL::PKey::RSA.new(4096)
     # puts "Done!"
 
-    client = Acme::Client.new(private_key: private_key, endpoint: Letsencrypt.configuration.acme_endpoint, connection_options: { request: { open_timeout: 5, timeout: 5 } })
+    client = Acme::Client.new(private_key: private_key, endpoint: configuration.acme_endpoint, connection_options: { request: { open_timeout: 5, timeout: 5 } })
 
     # print "Registering with LetsEncrypt..."
-    registration = client.register(contact: "mailto:#{Letsencrypt.configuration.acme_email}")
+    registration = client.register(contact: "mailto:#{configuration.acme_email}")
 
     registration.agree_terms
     # puts "Done!"
 
     domains = []
-    if Letsencrypt.configuration.acme_domain
+    if configuration.acme_domain
       # puts "Using ACME_DOMAIN configuration variable..."
-      domains = Letsencrypt.configuration.acme_domain.split(',').map(&:strip)
+      domains = configuration.acme_domain.split(',').map(&:strip)
     else
       domains = heroku.domain.list(heroku_app).map{|domain| domain['hostname']}
       puts "Using #{domains.length} configured Heroku domain(s) for this app..."
@@ -45,8 +47,8 @@ namespace :letsencrypt do
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      attempt_letsencrypt_config_filename_before_update = Letsencrypt.configuration.challenge_filename
-      attempt_letsencrypt_config_file_content_before_update = Letsencrypt.configuration.challenge_file_content
+      attempt_letsencrypt_config_filename_before_update = configuration.challenge_filename
+      attempt_letsencrypt_config_file_content_before_update = configuration.challenge_file_content
 
       print "Setting config vars on Heroku... \n"
       attempt_challenge_filename_returned_from_acme = challenge.filename
@@ -62,8 +64,8 @@ namespace :letsencrypt do
       attempt_heroku_challenge_filename_after_update = update_result['ACME_CHALLENGE_FILENAME']
       attempt_heroku_challenge_file_content_after_update = update_result['ACME_CHALLENGE_FILE_CONTENT']
 
-      attempt_letsencrypt_config_filename_after_update = Letsencrypt.configuration.challenge_filename
-      attempt_letsencrypt_config_file_content_after_update = Letsencrypt.configuration.challenge_file_content
+      attempt_letsencrypt_config_filename_after_update = configuration.challenge_filename
+      attempt_letsencrypt_config_file_content_after_update = configuration.challenge_file_content
 
       puts "Done!"
 

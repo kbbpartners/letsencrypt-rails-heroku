@@ -5,18 +5,20 @@ module Letsencrypt
 
   def self.configure
     self.configuration ||= Configuration.new
+    self.challenge = Challenge.new
     yield(configuration) if block_given?
   end
 
   def self.challenge_configured?
-    self.configuration.challenge_filename &&
-      self.configuration.challenge_filename.start_with?(".well-known/") &&
-      self.configuration.challenge_file_content
+    self.challenge.challenge_filename &&
+      self.challenge.challenge_filename.start_with?(".well-known/") &&
+      self.challenge.challenge_file_content
   end
 
   def self.update_challenge(filename, file_content)
-    self.configuration.challenge_filename = filename
-    self.configuration.challenge_file_content = file_content
+    self.challenge = Challenge.new
+    # self.challenge.challenge_filename = filename
+    # self.challenge.challenge_file_content = file_content
   end
 
   class Configuration
@@ -32,6 +34,15 @@ module Letsencrypt
 
     def valid?
       heroku_token && heroku_app && acme_email
+    end
+  end
+
+  class Challenge
+    attr_accessor :challenge_filename, :challenge_file_content
+
+    def initialize
+      @challenge_filename = ENV["ACME_CHALLENGE_FILENAME"]
+      @challenge_file_content = ENV["ACME_CHALLENGE_FILE_CONTENT"]
     end
   end
 end
