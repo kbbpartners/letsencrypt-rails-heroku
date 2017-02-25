@@ -60,9 +60,6 @@ namespace :letsencrypt do
         'ACME_CHALLENGE_FILE_CONTENT' => challenge.file_content
       })
 
-      Letsencrypt.configuration.acme_challenge_filename = update_result['ACME_CHALLENGE_FILENAME']
-      Letsencrypt.configuration.acme_challenge_file_content = update_result['ACME_CHALLENGE_FILENAME']
-
       attempt_env_challenge_filename_after_update = ENV["ACME_CHALLENGE_FILENAME"]
       attempt_env_challenge_file_content_after_update = update_result['ACME_CHALLENGE_FILE_CONTENT']
 
