@@ -9,12 +9,12 @@ module Letsencrypt
   end
 
   def self.challenge_configured?
-    configuration.acme_challenge_filename &&
-      configuration.challenge_filename.start_with?(".well-known/") &&
-      configuration.challenge_file_content
+    self.challenge_filename &&
+      self.challenge_filename.start_with?(".well-known/") &&
+      self.challenge_file_content
   end
 
-  def self.refresh_challenge(filename, file_content)
+  def self.update_challenge(filename, file_content)
     self.challenge_filename = filename
     self.challenge_file_content = file_content
   end
