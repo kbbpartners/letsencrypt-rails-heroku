@@ -1,6 +1,6 @@
 module Letsencrypt
   class << self
-    attr_accessor :configuration
+    attr_accessor :configuration, :challenge
   end
 
   def self.configure
@@ -22,7 +22,7 @@ module Letsencrypt
   end
 
   class Configuration
-    attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint, :challenge_filename, :challenge_file_content
+    attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint
 
     def initialize
       @heroku_token = ENV["HEROKU_TOKEN"]
