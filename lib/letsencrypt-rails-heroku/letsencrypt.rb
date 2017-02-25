@@ -17,8 +17,8 @@ module Letsencrypt
 
   def self.update_challenge(filename, file_content)
     self.challenge = Challenge.new
-    # self.challenge.challenge_filename = filename
-    # self.challenge.challenge_file_content = file_content
+    self.challenge.challenge_filename = filename
+    self.challenge.challenge_file_content = file_content
   end
 
   class Configuration
