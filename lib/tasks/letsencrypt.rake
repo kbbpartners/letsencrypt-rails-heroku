@@ -87,29 +87,29 @@ namespace :letsencrypt do
       print "!! Calling: http://#{hostname}/#{challenge.filename}\n"
 
       begin
-        result = open("http://#{hostname}/#{challenge.filename}").read
-        print "!! Result returned: #{result} \n"
+        open("http://#{hostname}/#{challenge.filename}").read
       rescue OpenURI::HTTPError => e
         if Time.now - start_time <= 30
           puts "Error fetching challenge, retrying... #{e.message}"
+
+          puts "Attempt #{attempt_number}: #{attempt_domain}  \n\n"
+          puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
+          puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
+          puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
+          puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
+          puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
+          puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
+
           sleep(5)
           retry
         else
           puts "Attempt #{attempt_number}: #{attempt_domain}  \n\n"
           puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
-          # puts "Before Update, ENV, File Content: \n#{attempt_env_challenge_file_code_before_update} \n\n"
           puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
-          # puts "Before Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_before_update} \n\n"
-
           puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
-          # puts "Returned from ACME, File Content: \n#{attempt_challenge_file_content_returned_from_acme} \n\n"
-
           puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
-          # puts "After Update, ENV, File Content: \n#{attempt_env_challenge_file_code_after_update} \n\n"
           puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
-          # puts "After Update, Heroku Response, File Content: \n#{attempt_heroku_challenge_file_code_after_update} \n\n"
           puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
-          # puts "After Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_after_update} \n\n"
 
           failure_message = "Error waiting for response from http://#{hostname}/#{challenge.filename}, Error: #{e.message}"
           raise Letsencrypt::Error::ChallengeUrlError, failure_message
