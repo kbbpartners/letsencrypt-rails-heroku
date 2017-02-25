@@ -45,9 +45,6 @@ namespace :letsencrypt do
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      # attempt_env_challenge_filename_before_update = ENV["ACME_CHALLENGE_FILENAME"]
-      # attempt_env_challenge_file_content_before_update = ENV["ACME_CHALLENGE_FILE_CONTENT"]
-
       attempt_letsencrypt_config_filename_before_update = Letsencrypt.challenge_filename
       attempt_letsencrypt_config_file_content_before_update = Letsencrypt.challenge_file_content
 
@@ -61,9 +58,6 @@ namespace :letsencrypt do
       })
 
       Letsencrypt.refresh_challenge(challenge.filename, challenge.file_content)
-
-      # attempt_env_challenge_filename_after_update = ENV["ACME_CHALLENGE_FILENAME"]
-      # attempt_env_challenge_file_content_after_update = update_result['ACME_CHALLENGE_FILE_CONTENT']
 
       attempt_heroku_challenge_filename_after_update = update_result['ACME_CHALLENGE_FILENAME']
       attempt_heroku_challenge_file_content_after_update = update_result['ACME_CHALLENGE_FILE_CONTENT']
@@ -95,10 +89,8 @@ namespace :letsencrypt do
           puts "******************************************************************\n"
           puts "Attempt #{attempt_number}: #{attempt_domain}  \n"
           puts "******************************************************************\n"
-          puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
           puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
           puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
-          puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
           puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
           puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
           puts "******************************************************************\n\n\n"
@@ -109,10 +101,8 @@ namespace :letsencrypt do
           puts "******************************************************************\n"
           puts "Attempt #{attempt_number}: #{attempt_domain}  \n"
           puts "******************************************************************\n"
-          puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
           puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
           puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
-          puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
           puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
           puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
           puts "******************************************************************\n\n\n"
