@@ -9,7 +9,7 @@ module Letsencrypt
   end
 
   def self.refresh_configuration
-    Configuration.new
+    self.configuration = Configuration.new
   end
 
   def self.challenge_configured?
