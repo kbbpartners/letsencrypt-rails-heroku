@@ -8,6 +8,10 @@ module Letsencrypt
     yield(configuration) if block_given?
   end
 
+  def self.refresh_configuration
+    Configuration.new
+  end
+
   def self.challenge_configured?
     configuration.acme_challenge_filename &&
       configuration.acme_challenge_filename.start_with?(".well-known/") &&
