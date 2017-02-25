@@ -1,6 +1,6 @@
 module Letsencrypt
   class << self
-    attr_accessor :configuration, :challenge_filename, :challenge_file_content
+    attr_accessor :configuration
   end
 
   def self.configure
@@ -9,18 +9,18 @@ module Letsencrypt
   end
 
   def self.challenge_configured?
-    self.challenge_filename &&
-      self.challenge_filename.start_with?(".well-known/") &&
-      self.challenge_file_content
+    self.configuration.challenge_filename &&
+      self.configuration.challenge_filename.start_with?(".well-known/") &&
+      self.configuration.challenge_file_content
   end
 
   def self.update_challenge(filename, file_content)
-    self.challenge_filename = filename
-    self.challenge_file_content = file_content
+    self.configuration.challenge_filename = filename
+    self.configuration.challenge_file_content = file_content
   end
 
   class Configuration
-    attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint
+    attr_accessor :heroku_token, :heroku_app, :acme_email, :acme_domain, :acme_endpoint, :challenge_filename, :challenge_file_content
 
     def initialize
       @heroku_token = ENV["HEROKU_TOKEN"]

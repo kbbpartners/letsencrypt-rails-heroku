@@ -45,8 +45,8 @@ namespace :letsencrypt do
       authorization = client.authorize(domain: domain)
       challenge = authorization.http01
 
-      attempt_letsencrypt_config_filename_before_update = Letsencrypt.challenge_filename
-      attempt_letsencrypt_config_file_content_before_update = Letsencrypt.challenge_file_content
+      attempt_letsencrypt_config_filename_before_update = Letsencrypt.configuration.challenge_filename
+      attempt_letsencrypt_config_file_content_before_update = Letsencrypt.configuration.challenge_file_content
 
       print "Setting config vars on Heroku... \n"
       attempt_challenge_filename_returned_from_acme = challenge.filename
@@ -62,8 +62,8 @@ namespace :letsencrypt do
       attempt_heroku_challenge_filename_after_update = update_result['ACME_CHALLENGE_FILENAME']
       attempt_heroku_challenge_file_content_after_update = update_result['ACME_CHALLENGE_FILE_CONTENT']
 
-      attempt_letsencrypt_config_filename_after_update = Letsencrypt.challenge_filename
-      attempt_letsencrypt_config_file_content_after_update = Letsencrypt.challenge_file_content
+      attempt_letsencrypt_config_filename_after_update = Letsencrypt.configuration.challenge_filename
+      attempt_letsencrypt_config_file_content_after_update = Letsencrypt.configuration.challenge_file_content
 
       puts "Done!"
 
