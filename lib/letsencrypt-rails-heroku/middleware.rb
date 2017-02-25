@@ -11,12 +11,12 @@ module Letsencrypt
 
     def _call(env)
       current_path = env["PATH_INFO"]
-      challenge_filename = "/#{Letsencrypt.configuration.challenge_filename}"
-      challenge_file_content = "#{Letsencrypt.configuration.challenge_file_content}"
+      challenge_filename = "/#{Letsencrypt.challenge.challenge_filename}"
+      challenge_file_content = "#{Letsencrypt.challenge.challenge_file_content}"
       matching_paths = current_path == challenge_filename
 
       if Letsencrypt.challenge_configured? && matching_paths
-        return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.configuration.challenge_file_content]]
+        return [200, {"Content-Type" => "text/plain"}, [Letsencrypt.challenge.challenge_file_content]]
       else
         puts "LE 01A - Current path and expected path match? #{matching_paths}"
         puts "LE 01A - Challenge response expected: #{challenge_file_content}"
