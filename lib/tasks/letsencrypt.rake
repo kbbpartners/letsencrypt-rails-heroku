@@ -93,6 +93,22 @@ namespace :letsencrypt do
           sleep(5)
           retry
         else
+          puts "Attempt #{attempt_number}: #{attempt_domain}  \n\n"
+          puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
+          # puts "Before Update, ENV, File Content: \n#{attempt_env_challenge_file_code_before_update} \n\n"
+          puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
+          # puts "Before Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_before_update} \n\n"
+
+          puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
+          # puts "Returned from ACME, File Content: \n#{attempt_challenge_file_content_returned_from_acme} \n\n"
+
+          puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
+          # puts "After Update, ENV, File Content: \n#{attempt_env_challenge_file_code_after_update} \n\n"
+          puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
+          # puts "After Update, Heroku Response, File Content: \n#{attempt_heroku_challenge_file_code_after_update} \n\n"
+          puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
+          # puts "After Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_after_update} \n\n"
+
           failure_message = "Error waiting for response from http://#{hostname}/#{challenge.filename}, Error: #{e.message}"
           raise Letsencrypt::Error::ChallengeUrlError, failure_message
         end
@@ -109,7 +125,7 @@ namespace :letsencrypt do
 
       while challenge.verify_status == 'pending'
         if Time.now - start_time >= 30
-          failure_message = "5. Failed - timed out waiting for challenge verification."
+          failure_message = "Failed - timed out waiting for challenge verification."
           raise Letsencrypt::Error::VerificationTimeoutError, failure_message
         end
         sleep(3)
@@ -122,22 +138,6 @@ namespace :letsencrypt do
         failure_message = "Status: #{challenge.verify_status}, Error: #{challenge.error}"
         raise Letsencrypt::Error::VerificationError, failure_message
       end
-
-      puts "Attempt #{attempt_number}: #{attempt_domain}  \n\n"
-      puts "Before Update, ENV, File Name: \n#{attempt_env_challenge_filename_before_update} \n"
-      # puts "Before Update, ENV, File Content: \n#{attempt_env_challenge_file_code_before_update} \n\n"
-      puts "Before Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_before_update} \n"
-      # puts "Before Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_before_update} \n\n"
-
-      puts "Returned from ACME, File Name: \n#{attempt_challenge_filename_returned_from_acme} \n"
-      # puts "Returned from ACME, File Content: \n#{attempt_challenge_file_content_returned_from_acme} \n\n"
-
-      puts "After Update, ENV, File Name: \n#{attempt_env_challenge_filename_after_update} \n"
-      # puts "After Update, ENV, File Content: \n#{attempt_env_challenge_file_code_after_update} \n\n"
-      puts "After Update, Heroku Response, File Name: \n#{attempt_heroku_challenge_filename_after_update} \n"
-      # puts "After Update, Heroku Response, File Content: \n#{attempt_heroku_challenge_file_code_after_update} \n\n"
-      puts "After Update, Letsencrypt Config, File Name: \n#{attempt_letsencrypt_config_filename_after_update} \n"
-      # puts "After Update, Letsencrypt Config, File Content: \n#{attempt_letsencrypt_config_file_content_after_update} \n\n"
     end
 
     # Unset temporary config vars. We don't care about waiting for this to
